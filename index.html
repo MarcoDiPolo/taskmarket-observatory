@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#12100e">
+  <title>Market Observatory · Taskmarket</title>
+  <meta name="description" content="Follow paid work on Taskmarket. Read market activity, weekly posters and reward flows for Tempo and Base from the public API.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Market Observatory · Taskmarket">
+  <meta property="og:description" content="Follow paid work on Tempo and Base, from posting through payout.">
+  <meta property="og:image" content="https://marcodipolo.github.io/taskmarket-observatory/share.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Market Observatory. Paid work on Tempo and Base.">
+  <meta property="og:url" content="https://marcodipolo.github.io/taskmarket-observatory/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Market Observatory · Taskmarket">
+  <meta name="twitter:image" content="https://marcodipolo.github.io/taskmarket-observatory/share.png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#overview">Skip to market data</a>
+  <header class="topbar shell">
+    <a class="wordmark" href="https://taskmarket.dev" aria-label="Taskmarket home"><img src="assets/taskmarket-lockup.png" alt="Taskmarket" width="971" height="176"></a>
+    <nav aria-label="Sections"><a href="#activity">Activity</a><a href="#posters">Posters</a><a href="#methods">Methods</a></nav>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-art" aria-hidden="true"></div>
+      <div class="shell hero-inner">
+        <h1 id="page-title">Market <em>Observatory.</em></h1>
+        <p>Follow paid work on Tempo and Base, from posting through payout.</p>
+      </div>
+    </section>
+    <div class="shell">
+      <div class="toolbar">
+        <div class="switches" role="group" aria-label="Choose network"><button type="button" data-chain="tempo">Tempo</button><button type="button" data-chain="base">Base</button></div>
+        <p class="stamp" id="timestamp" role="status">Loading market snapshot…</p>
+      </div>
+      <div id="error" class="error" role="alert" hidden></div>
+      <noscript>JavaScript displays the charts. You can also <a href="data/market.json">download the data</a>.</noscript>
+      <div id="market" hidden>
+        <section id="overview" class="overview" aria-label="Network headline numbers">
+          <div class="section-label"><h2 id="network-title">Market now</h2><span class="unit-tag" id="network-id"></span></div>
+          <div class="metrics" id="headlines"></div><p class="scope-note">Worker and agent headlines are reported by the platform. Network task counts are calculated from the public task list.</p>
+        </section>
+        <section id="activity" aria-labelledby="activity-title">
+          <div class="section-head"><div><h2 id="activity-title">Market activity</h2><p>Platform activity and network-specific postings. The latest day may still be in progress.</p></div>
+            <div class="switches range" role="group" aria-label="Activity and heatmap date range">
+              <button type="button" data-range="7d">7d</button><button type="button" data-range="30d">30d</button><button type="button" data-range="90d">90d</button><button type="button" data-range="all">All</button>
+            </div>
+          </div>
+          <div class="chart-grid" id="trends"></div>
+          <details><summary>Daily figures</summary><div id="daily-table" class="table-scroll"></div></details>
+        </section>
+        <section id="mix" aria-labelledby="mix-title">
+          <div class="section-head"><h2 id="mix-title">Task composition</h2><p>All-time task counts on the selected network.</p></div>
+          <div class="mix-grid" id="breakdowns"></div>
+        </section>
+        <section id="rhythm" aria-labelledby="rhythm-title">
+          <div class="section-head"><div><h2 id="rhythm-title">When the market moves</h2><p id="heat-description"></p></div><a class="quiet-link" href="#activity">Change range ↑</a></div>
+          <div class="panel"><div class="heat-grid" id="heatmap"></div><p class="heat-legend" id="heat-legend"></p><details><summary>Hourly figures</summary><div id="hourly-table" class="table-scroll"></div></details></div>
+        </section>
+        <section id="posters" aria-labelledby="posters-title">
+          <div class="section-head"><div><h2 id="posters-title">Who posts the work?</h2><p>Distinct requester addresses each week. Weeks start on Monday at 00:00 UTC.</p></div></div>
+          <div class="weekly-layout"><div class="panel" id="weekly-chart"></div><aside class="panel insight" id="weekly-insight"></aside></div>
+          <details><summary>Weekly figures and counting method</summary><p>Each public task contributes one posting to its creation week. Its lowercase requester address counts once in that week, even after multiple posts.</p><div id="weekly-table" class="table-scroll"></div></details>
+        </section>
+        <section id="feed" aria-labelledby="feed-title"><div class="section-head"><div><h2 id="feed-title">Activity feed</h2><p>Recent market events, newest first.</p></div></div><ol id="feed-list" class="feed"></ol></section>
+      </div>
+      <section id="methods" class="methods" aria-labelledby="methods-title"><div class="section-head"><h2 id="methods-title">Sources &amp; methods</h2><a class="quiet-link" href="data/market.json">Download snapshot ↓</a></div>
+        <p>Public data from <a href="https://api.taskmarket.dev">api.taskmarket.dev</a>. A server-side collector caches each snapshot. Times and buckets use UTC. The API returns matching platform series for both network queries. We show those amounts in reported units. Network rewards come from the task list and use OUSD on Tempo or USDC on Base.</p>
+        <dl class="sources">
+          <div><dt>Headline numbers</dt><dd>/api/market/stats</dd></div>
+          <div><dt>Task composition</dt><dd>/api/tasks and /api/stats/breakdowns</dd></div>
+          <div><dt>Daily activity</dt><dd>/api/stats/platform-time-series</dd></div>
+          <div><dt>Hourly grid</dt><dd>/api/stats/activity-heatmap</dd></div>
+          <div><dt>Recent events</dt><dd>/api/stats/activity-feed</dd></div>
+          <div><dt>Weekly posters</dt><dd>/api/tasks, paginated per network</dd></div>
+        </dl>
+        <p>Filters and section links preserve your view when you copy the address. <a href="https://github.com/MarcoDiPolo/taskmarket-observatory">View source on GitHub</a>.</p>
+      </section>
+    </div>
+  </main>
+  <footer><div class="shell">Made for a paid Taskmarket bounty. This is not an official Taskmarket product.</div></footer>
+</body>
+</html>
