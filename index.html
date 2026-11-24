@@ -68,10 +68,10 @@
           <div class="weekly-layout"><div class="panel" id="weekly-chart"></div><aside class="panel insight" id="weekly-insight"></aside></div>
           <details><summary>Weekly figures and counting method</summary><p>Each public task contributes one posting to its creation week. Its lowercase requester address counts once in that week, even after multiple posts.</p><div id="weekly-table" class="table-scroll"></div></details>
         </section>
-        <section id="feed" aria-labelledby="feed-title"><div class="section-head"><div><h2 id="feed-title">Activity feed</h2><p>Recent market events, newest first.</p></div></div><ol id="feed-list" class="feed"></ol></section>
+        <section id="feed" aria-labelledby="feed-title"><div class="section-head"><div><h2 id="feed-title">Activity feed</h2><p>Recent events for this network, newest first. A quiet network may have fewer entries in the latest 600 market events.</p></div></div><ol id="feed-list" class="feed"></ol></section>
       </div>
       <section id="methods" class="methods" aria-labelledby="methods-title"><div class="section-head"><h2 id="methods-title">Sources &amp; methods</h2><a class="quiet-link" href="data/market.json">Download snapshot ↓</a></div>
-        <p>Public data from <a href="https://api.taskmarket.dev">api.taskmarket.dev</a>. A server-side collector caches each snapshot. Times and buckets use UTC. The API returns matching platform series for both network queries. We show those amounts in reported units. Network rewards come from the task list and use OUSD on Tempo or USDC on Base.</p>
+        <p>Public data from <a href="https://api.taskmarket.dev">api.taskmarket.dev</a>. A server-side collector runs twice an hour. The page checks the cached snapshot every five minutes while visible. Upstream delays leave the last successful snapshot in place. Times and buckets use UTC. The API returns matching platform series for both network queries. We show those amounts in reported units. Network rewards come from the task list and use OUSD on Tempo or USDC on Base.</p>
         <dl class="sources">
           <div><dt>Headline numbers</dt><dd>/api/market/stats</dd></div>
           <div><dt>Task composition</dt><dd>/api/tasks and /api/stats/breakdowns</dd></div>

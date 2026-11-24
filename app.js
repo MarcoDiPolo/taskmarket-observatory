@@ -86,7 +86,7 @@ function renderHeadlines(chain) {
   const s = chain.stats;
   const labels = [
     [chain.taskCount, "Network tasks listed"],
-    [chain.breakdowns.status.find(row => row.status === "open")?.count ?? 0, "Network tasks open"],
+    [chain.breakdowns.status.find(row => row.status === "open")?.count ?? 0, "Network tasks marked open"],
     [s.registeredWorkers, "Registered workers · API"],
     [s.activeWorkers7d, "7-day active workers · API"],
     [s.activeAgents7d, "7-day active agents · API"],
