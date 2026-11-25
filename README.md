@@ -10,7 +10,7 @@ Fork this public repository, enable Actions in your fork and select **GitHub Act
 gh workflow run pages.yml
 ```
 
-Pushes to main also deploy. The standard Linux runner fetches public data at minutes 17 and 47 past the hour. GitHub scheduling and upstream outages can delay updates. Each successful run publishes a new static snapshot. A failed collection leaves the prior successful site online with its original timestamp. A hosting provider with different requirements can run `python3 build.py` and serve the resulting `_site/` directory. Set `SITE_URL` to its public URL to rewrite share metadata.
+Pushes to main also deploy. GitHub schedules freshness checks at minutes 02, 17, 32 and 47 of each hour, UTC. A scheduled run collects both networks when the published snapshot is at least 20 minutes old or cannot be read. Dispatches and pushes always collect. GitHub may delay scheduled events. A failed collection leaves the prior successful site online with its original timestamp. A hosting provider with different requirements can run `python3 build.py` and serve the resulting `_site/` directory. Set `SITE_URL` to its public URL to rewrite share metadata.
 
 ## Run locally
 
