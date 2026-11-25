@@ -214,12 +214,32 @@ for (const button of document.querySelectorAll("[data-chain]")) {
 for (const button of document.querySelectorAll("[data-range]")) {
   button.addEventListener("click",() => { range = button.dataset.range; updateLocation(); });
 }
-async function load() {
-  try {
-    const response = await fetch("data/market.json",{cache:"no-cache"});
-    if (!response.ok) throw new Error("Snapshot unavailable");
-    market = await response.json();
+async function readSnapshot(url) {
+  const response = await fetch(url, {
+    cache: "no-cache", credentials: "omit", referrerPolicy: "no-referrer",
+    signal: AbortSignal.timeout(8000)
+  });
+  if (!response.ok) throw new Error("Snapshot unavailable");
+  const data = await response.json();
+  const stamp = Date.parse(data.asOf);
+  if (!Number.isFinite(stamp) || stamp > Date.now() + 60000 ||
+      data.chains?.base?.id !== 8453 || data.chains?.tempo?.id !== 4217) {
+    throw new Error("Incomplete market snapshot");
+  }
+  if (market && Date.parse(market.asOf) >= stamp) {
     paint();
+    return;
+  }
+  market = data;
+  paint();
+  el("snapshot-link").href = url;
+}
+async function load() {
+  const staticUrl = "data/market.json";
+  const cacheUrl = document.querySelector('meta[name="market-cache-url"]')?.content;
+  const urls = cacheUrl ? [staticUrl, cacheUrl] : [staticUrl];
+  try {
+    await Promise.any(urls.map(readSnapshot));
     el("error").hidden = true;
   } catch {
     const note = el("error");

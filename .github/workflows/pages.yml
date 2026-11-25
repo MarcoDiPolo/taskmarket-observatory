@@ -54,6 +54,8 @@ jobs:
       - name: Collect and package the public site
         if: steps.freshness.outputs.refresh == 'true'
         run: python3 build.py
+        env:
+          MARKET_CACHE_URL: ${{ vars.MARKET_CACHE_URL }}
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         if: steps.freshness.outputs.refresh == 'true'
         with:
