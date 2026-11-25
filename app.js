@@ -237,6 +237,7 @@ async function readSnapshot(url) {
 async function load() {
   const staticUrl = "data/market.json";
   const cacheUrl = document.querySelector('meta[name="market-cache-url"]')?.content;
+  el("cache-method").hidden = !cacheUrl;
   const urls = cacheUrl ? [staticUrl, cacheUrl] : [staticUrl];
   try {
     await Promise.any(urls.map(readSnapshot));
